@@ -9,9 +9,7 @@ import java.util.UUID;
 /**
  * DTO for {@link com.gdh.assetMenagement.entity.Code}
  */
-@Data
 @ToString
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CodeRDto extends BasicEntityRDto implements Serializable {
@@ -20,4 +18,36 @@ public class CodeRDto extends BasicEntityRDto implements Serializable {
     String code;
     String codeValue;
     String discription;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCodeValue() {
+        return codeValue;
+    }
+
+    public void setCodeValue(String codeValue) {
+        this.codeValue = codeValue;
+    }
+
+    public String getDiscription() {
+        return discription;
+    }
+
+    public void setDiscription(String discription) {
+        this.discription = discription;
+    }
 }

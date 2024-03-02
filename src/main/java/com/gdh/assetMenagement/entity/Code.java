@@ -2,6 +2,7 @@ package com.gdh.assetMenagement.entity;
 
 import com.gdh.assetMenagement.entity.common.BasicEntity;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.Nationalized;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -14,9 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 @Entity
 @Table(name = "TB_CODE")
 public class Code extends BasicEntity implements Serializable {
@@ -41,47 +40,31 @@ public class Code extends BasicEntity implements Serializable {
         return id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getCodeValue() {
-        return codeValue;
-    }
-
-    public String getDiscription() {
-        return discription;
-    }
-
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public void setCode(String code) {
         this.code = code;
     }
 
+    public String getCodeValue() {
+        return codeValue;
+    }
+
     public void setCodeValue(String codeValue) {
         this.codeValue = codeValue;
     }
 
+    public String getDiscription() {
+        return discription;
+    }
+
     public void setDiscription(String discription) {
         this.discription = discription;
-    }
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Code code = (Code) o;
-        return getId() != null && Objects.equals(getId(), code.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

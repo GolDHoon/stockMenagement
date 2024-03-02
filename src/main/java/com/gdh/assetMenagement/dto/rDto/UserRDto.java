@@ -9,9 +9,9 @@ import java.util.UUID;
 /**
  * DTO for {@link com.gdh.assetMenagement.entity.User}
  */
-@Data
 @ToString
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRDto extends BasicEntityRDto implements Serializable {
@@ -19,5 +19,5 @@ public class UserRDto extends BasicEntityRDto implements Serializable {
     UUID id;
     String userId;
     String password;
-    UkcdCodeRRDto ukcd;
+    String ukcd;
 }

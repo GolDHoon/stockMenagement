@@ -1,18 +1,23 @@
 package com.gdh.assetMenagement.entity;
 
 import com.gdh.assetMenagement.entity.common.BasicEntity;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @ToString
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Accessors(chain = true)
 @Entity
 @Table(name = "TB_USER")
 public class User extends BasicEntity implements Serializable {
@@ -29,8 +34,7 @@ public class User extends BasicEntity implements Serializable {
     @Column(name = "Password", nullable = false, length = 128)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "Ukcd", nullable = false, referencedColumnName = "Code")
-    private UkcdCode ukcd;
+    @Column(name = "Ukcd", nullable = false)
+    private String ukcd;
 
 }

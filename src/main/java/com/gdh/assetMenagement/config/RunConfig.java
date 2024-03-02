@@ -2,45 +2,37 @@ package com.gdh.assetMenagement.config;
 
 import com.gdh.assetMenagement.dto.common.CodeDto;
 import com.gdh.assetMenagement.dto.common.CommonComponent;
-import com.gdh.assetMenagement.entity.*;
-import com.gdh.assetMenagement.repository.KisCodeRepository;
-import com.gdh.assetMenagement.repository.basic.*;
+import com.gdh.assetMenagement.dto.rDto.*;
+import com.gdh.assetMenagement.service.rService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 @Component
 public class RunConfig implements CommandLineRunner {
 
-    private final CommonComponent commonComponent;
-    private final CodeRepository codeRepository;
-    private final LogiCodeRepository logiCodeRepository;
-    private final BizzCodeRepository bizzCodeRepository;
-    private final UkcdCodeRepository ukcdCodeRepository;
-    private final StckCodeRepository stckCodeRepository;
-    private final KisCodeRepository kisCodeRepository;
-
+    private CommonComponent commonComponent;
+    private CodeRService codeRService;
+    private LogiCodeRService logiCodeRService;
+    private BizzCodeRService bizzCodeRService;
+    private UkcdCodeRService ukcdCodeRService;
+    private StckCodeRService stckCodeRService;
     private final Lock lock = new ReentrantLock();
 
     @Autowired
-    public RunConfig(CommonComponent commonComponent
-            , CodeRepository codeRepository
-            , LogiCodeRepository logiCodeRepository
-            , UkcdCodeRepository ukcdCodeRepository
-            , BizzCodeRepository bizzCodeRepository
-            , StckCodeRepository stckCodeRepository
-            , KisCodeRepository kisCodeRepository) {
+    public RunConfig(CommonComponent commonComponent, CodeRService codeRService, LogiCodeRService logiCodeRService, BizzCodeRService bizzCodeRService, UkcdCodeRService ukcdCodeRService, StckCodeRService stckCodeRService) {
         this.commonComponent = commonComponent;
-        this.codeRepository = codeRepository;
-        this.logiCodeRepository = logiCodeRepository;
-        this.ukcdCodeRepository = ukcdCodeRepository;
-        this.bizzCodeRepository = bizzCodeRepository;
-        this.stckCodeRepository = stckCodeRepository;
-        this.kisCodeRepository = kisCodeRepository;
+        this.codeRService = codeRService;
+        this.logiCodeRService = logiCodeRService;
+        this.bizzCodeRService = bizzCodeRService;
+        this.ukcdCodeRService = ukcdCodeRService;
+        this.stckCodeRService = stckCodeRService;
     }
 
     @Override
@@ -49,73 +41,94 @@ public class RunConfig implements CommandLineRunner {
     }
 
     private void updateCodeList() {
-        LinkedList<CodeDto> codeList = new LinkedList<>();
-
-        codeRepository.findAll().forEach(entity -> addCodeToList(entity, codeList));
-        logiCodeRepository.findAll().forEach(entity -> addLogiCodeToList(entity, codeList));
-        bizzCodeRepository.findAll().forEach(entity -> addBizzCodeToList(entity, codeList));
-        ukcdCodeRepository.findAll().forEach(entity -> addUkcdCodeToList(entity, codeList));
-        stckCodeRepository.findAll().forEach(entity -> addStckCodeToList(entity, codeList));
-        kisCodeRepository.findAll().forEach(entity -> addKisCodeToList(entity, codeList));
-
         lock.lock();
         try {
+            LinkedList<CodeDto> codeList = new LinkedList<>();
+
+            addCodeList(codeList);
+            addLogiCodeList(codeList);
+            addBizzCodeList(codeList);
+            addUkcdCodeList(codeList);
+            addStckCodeList(codeList);
+
             commonComponent.setCodeList(codeList);
         } finally {
             lock.unlock();
         }
     }
 
-    private void addCodeToList(Code entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(entity.getCode());
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getCode());
-        codeList.add(codeDto);
+    private void addStckCodeList(LinkedList<CodeDto> codeList){
+        List<StckCodeRDto> stckCodeRDtoList = stckCodeRService.selectStckCodeFindAll().stream()
+             .filter(dto -> dto.getUse() == true)
+             .filter(dto -> dto.getDel() == false)
+             .collect(Collectors.toList());
+        stckCodeRDtoList.forEach(stckCodeRdto -> {
+            CodeDto codeDto = new CodeDto();
+            codeDto.setCode(stckCodeRdto.getCode());
+            codeDto.setCodeValue(stckCodeRdto.getCodeValue());
+            codeDto.setFullCode(stckCodeRdto.getFullCode());
+            codeDto.setParentsCode(stckCodeRdto.getParentsCode());
+            codeList.add(codeDto);
+        });
     }
 
-    private void addLogiCodeToList(LogiCode entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(entity.getCode());
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getFullCode());
-        codeDto.setParentsCode(entity.getParentsCode().getCode());
-        codeList.add(codeDto);
+    private void addUkcdCodeList(LinkedList<CodeDto> codeList){
+        List<UkcdCodeRDto> ukcdCodeRDtoList = ukcdCodeRService.selectUkcdCodeFindAll();
+        ukcdCodeRDtoList = ukcdCodeRDtoList.stream()
+             .filter(dto -> dto.getUse() == true)
+             .filter(dto -> dto.getDel() == false)
+             .collect(Collectors.toList());
+        ukcdCodeRDtoList.forEach(ukcdCodeRdto -> {
+            CodeDto codeDto = new CodeDto();
+            codeDto.setCode(ukcdCodeRdto.getCode());
+            codeDto.setCodeValue(ukcdCodeRdto.getCodeValue());
+            codeDto.setFullCode(ukcdCodeRdto.getFullCode());
+            codeDto.setParentsCode(ukcdCodeRdto.getParentsCode());
+            codeList.add(codeDto);
+        });
     }
 
-    private void addBizzCodeToList(BizzCode entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(entity.getCode());
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getFullCode());
-        codeDto.setParentsCode(entity.getParentsCode().getCode());
-        codeList.add(codeDto);
+    private void addBizzCodeList(LinkedList<CodeDto> codeList) {
+        List<BizzCodeRDto> bizzCodeRDtoList = bizzCodeRService.selectBizzCodeFindAll().stream()
+               .filter(dto -> dto.getUse() == true)
+               .filter(dto -> dto.getDel() == false)
+               .collect(Collectors.toList());
+        bizzCodeRDtoList.forEach(bizzCodeRdto -> {
+            CodeDto codeDto = new CodeDto();
+            codeDto.setCode(bizzCodeRdto.getCode());
+            codeDto.setCodeValue(bizzCodeRdto.getCodeValue());
+            codeDto.setFullCode(bizzCodeRdto.getFullCode());
+            codeDto.setParentsCode(bizzCodeRdto.getParentsCode());
+            codeList.add(codeDto);
+        });
     }
 
-    private void addUkcdCodeToList(UkcdCode entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(entity.getCode());
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getFullCode());
-        codeDto.setParentsCode(entity.getParentsCode().getCode());
-        codeList.add(codeDto);
+    private void addLogiCodeList(LinkedList<CodeDto> codeList) {
+        List<LogiCodeRDto> logiCodeRDtoList = logiCodeRService.selectLogiCodeFindAll().stream()
+                .filter(dto -> dto.getUse() == true)
+                .filter(dto -> dto.getDel() == false)
+                .collect(Collectors.toList());
+        logiCodeRDtoList.forEach(logiCodeRdto -> {
+            CodeDto codeDto = new CodeDto();
+            codeDto.setCode(logiCodeRdto.getCode());
+            codeDto.setCodeValue(logiCodeRdto.getCodeValue());
+            codeDto.setFullCode(logiCodeRdto.getFullCode());
+            codeDto.setParentsCode(logiCodeRdto.getParentsCode());
+            codeList.add(codeDto);
+        });
     }
 
-    private void addStckCodeToList(StckCode entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(entity.getCode());
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getFullCode());
-        codeDto.setParentsCode(entity.getParentsCode().getCode());
-        codeList.add(codeDto);
-    }
-    private void addKisCodeToList(KisCode entity, LinkedList<CodeDto> codeList) {
-        CodeDto codeDto = new CodeDto();
-        codeDto.setCode(String.valueOf(entity.getCode()));
-        codeDto.setCodeValue(entity.getCodeValue());
-        codeDto.setFullCode(entity.getFullCode());
-        codeDto.setParentsCode(entity.getParentsCode().getCode());
-        codeList.add(codeDto);
+    private void addCodeList(LinkedList<CodeDto> codeList){
+        List<CodeRDto> codeRDtoList = codeRService.selectCodeFindAll().stream()
+                .filter(dto -> dto.getUse() == true)
+                .filter(dto -> dto.getDel() == false)
+                .collect(Collectors.toList());
+        codeRDtoList.forEach(codeRDto -> {
+            CodeDto codeDto = new CodeDto();
+            codeDto.setCode(codeRDto.getCode());
+            codeDto.setCodeValue(codeRDto.getCodeValue());
+            codeList.add(codeDto);
+        });
     }
 
 }

@@ -1,6 +1,6 @@
 package com.gdh.assetMenagement.config;
 
-import com.gdh.assetMenagement.schedule.KisReCertificationJob;
+import com.gdh.assetMenagement.schedule.stock.kis.KisReCertificationJob;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(kisReCertificationJobDetail)
                 .withIdentity("Kis재인증")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
                 .build();
     }
 }

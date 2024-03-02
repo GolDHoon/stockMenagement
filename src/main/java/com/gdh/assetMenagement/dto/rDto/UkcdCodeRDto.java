@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * DTO for {@link com.gdh.assetMenagement.entity.BizzCode}
+ * DTO for {@link com.gdh.assetMenagement.entity.UkcdCode}
  */
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BizzCodeRDto extends BasicEntityRDto implements Serializable {
+public class UkcdCodeRDto extends BasicEntityRDto implements Serializable {
     private static final long serialVersionUID = 1L;
     UUID id;
     String code;
