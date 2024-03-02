@@ -22,7 +22,7 @@ public class KisCertificationRDto extends BasicEntityRDto implements Serializabl
     String approvalKey;
     String accessToken;
     String tokenType;
-    Instant acessTokenExpired;
+    Instant accessTokenExpired;
 
     public UUID getId() {
         return id;
@@ -80,11 +80,11 @@ public class KisCertificationRDto extends BasicEntityRDto implements Serializabl
         this.tokenType = tokenType;
     }
 
-    public Instant getAcessTokenExpired() {
-        return acessTokenExpired;
+    public Instant getAccessTokenExpired() {
+        return accessTokenExpired;
     }
 
-    public void setAcessTokenExpired(Instant acessTokenExpired) {
-        this.acessTokenExpired = acessTokenExpired;
+    public void setAccessTokenExpired(Instant accessTokenExpired) {
+        this.accessTokenExpired = accessTokenExpired;
     }
 }

@@ -20,7 +20,7 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(kisReCertificationJobDetail)
                 .withIdentity("Kis재인증")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 * * * ?"))
                 .build();
     }
 }

@@ -25,7 +25,7 @@ public class KisCertificationRMapper extends BasicEntityRMapper<KisCertification
         kisCertificationRDto.setApprovalKey(kisCertification.getApprovalKey());
         kisCertificationRDto.setAccessToken(kisCertification.getAccessToken());
         kisCertificationRDto.setTokenType(kisCertification.getTokenType());
-        kisCertificationRDto.setAcessTokenExpired(kisCertification.getAcessTokenExpired());
+        kisCertificationRDto.setAccessTokenExpired(kisCertification.getAccessTokenExpired());
         return kisCertificationRDto;
     }
 
@@ -39,7 +39,7 @@ public class KisCertificationRMapper extends BasicEntityRMapper<KisCertification
         kisCertification.setApprovalKey(kisCertificationRDto.getApprovalKey());
         kisCertification.setAccessToken(kisCertificationRDto.getAccessToken());
         kisCertification.setTokenType(kisCertificationRDto.getTokenType());
-        kisCertification.setAcessTokenExpired(kisCertificationRDto.getAcessTokenExpired());
+        kisCertification.setAccessTokenExpired(kisCertificationRDto.getAccessTokenExpired());
         return kisCertification;
     }
 }

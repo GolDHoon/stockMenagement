@@ -48,8 +48,8 @@ public class KisCertification extends BasicEntity implements Serializable {
     @Column(name = "TokenType", length = 20)
     private String tokenType;
 
-    @Column(name = "AcessTokenExpired")
-    private Instant acessTokenExpired;
+    @Column(name = "accessTokenExpired")
+    private Instant accessTokenExpired;
 
     public UUID getId() {
         return id;
@@ -107,11 +107,11 @@ public class KisCertification extends BasicEntity implements Serializable {
         this.tokenType = tokenType;
     }
 
-    public Instant getAcessTokenExpired() {
-        return acessTokenExpired;
+    public Instant getAccessTokenExpired() {
+        return accessTokenExpired;
     }
 
-    public void setAcessTokenExpired(Instant acessTokenExpired) {
-        this.acessTokenExpired = acessTokenExpired;
+    public void setAccessTokenExpired(Instant accessTokenExpired) {
+        this.accessTokenExpired = accessTokenExpired;
     }
 }

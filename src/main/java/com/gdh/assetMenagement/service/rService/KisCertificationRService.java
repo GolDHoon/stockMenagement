@@ -1,10 +1,12 @@
 package com.gdh.assetMenagement.service.rService;
 
 import com.gdh.assetMenagement.dto.rDto.KisCertificationRDto;
+import com.gdh.assetMenagement.entity.KisCertification;
 import com.gdh.assetMenagement.mapper.rMapper.KisCertificationRMapper;
 import com.gdh.assetMenagement.repository.basic.KisCertificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -36,5 +38,12 @@ public class KisCertificationRService {
         });
 
         return kisCertificationRDtoList;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveKisCertification(KisCertificationRDto kisCertificationRDto){
+        KisCertificationRMapper kisCertificationRMapper = new KisCertificationRMapper();
+        KisCertification kisCertification = kisCertificationRMapper.toEntity(kisCertificationRDto);
+        kisCertificationRepository.save(kisCertification);
     }
 }

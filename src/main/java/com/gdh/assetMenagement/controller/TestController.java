@@ -20,6 +20,6 @@ public class TestController {
     }
     @RequestMapping(value ="/test0001", method = RequestMethod.POST)
     public void test0001() throws Exception {
-        kisCertificationService.receiveWebSocketAccessKey();
+//        kisCertificationService.receiveWebSocketAccessKey();
     }
 }

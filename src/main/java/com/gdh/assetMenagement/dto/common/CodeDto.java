@@ -3,6 +3,8 @@ package com.gdh.assetMenagement.dto.common;
 import lombok.*;
 
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class CodeDto {
     String fullCode;
     String code;
