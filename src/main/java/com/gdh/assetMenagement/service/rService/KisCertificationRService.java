@@ -25,7 +25,8 @@ public class KisCertificationRService {
     @Transactional(readOnly = true)
     public KisCertificationRDto selectKisCertificationFindByKisInfoId(UUID kisInfoId){
         KisCertificationRMapper kisCertificationRMapper = new KisCertificationRMapper();
-        return kisCertificationRMapper.toDto(kisCertificationRepository.findByKisInfoIdx(kisInfoId).orElse(null));
+        KisCertification kisCertification = kisCertificationRepository.findByKisInfoIdx(kisInfoId).orElse(null);
+        return kisCertification != null ? kisCertificationRMapper.toDto(kisCertification) : null;
     }
 
     @Transactional(readOnly = true)

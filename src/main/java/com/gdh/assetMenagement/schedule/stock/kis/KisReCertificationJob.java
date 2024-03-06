@@ -1,6 +1,5 @@
 package com.gdh.assetMenagement.schedule.stock.kis;
 
-import com.gdh.assetMenagement.dto.common.CodeDto;
 import com.gdh.assetMenagement.dto.common.CommonComponent;
 import com.gdh.assetMenagement.dto.common.KisCertificationDto;
 import com.gdh.assetMenagement.dto.rDto.KisCertificationRDto;
@@ -14,7 +13,6 @@ import org.quartz.JobExecutionException;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +33,7 @@ public class KisReCertificationJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        /*kisInfo 전체조회*/
         List<KisInfoRDto> kisInfoRDtos = kisInfoRService.selectKisInfoFindAll().stream()
                 .filter(dto -> dto.getUse() == true)
                 .filter(dto -> dto.getDel() == false)

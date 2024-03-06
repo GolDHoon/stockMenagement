@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -19,6 +21,7 @@ public class KisCertificationService {
     @Value("${custom.api.kis.domain}")
     String domain;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String receiveWebSocketAccessKey(String appKey, String scretKey) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
 
@@ -47,6 +50,7 @@ public class KisCertificationService {
         return approvalKey;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Map<String, String> receiveAccessToken(String appKey, String scretKey) throws Exception {
         HttpClient client = HttpClient.newHttpClient();
 

@@ -7,6 +7,7 @@ public abstract class BasicEntityRMapper<E extends BasicEntity, D extends BasicE
 
     public D toDtoByBasic(E entity){
         D dto = createDtoInstance();
+        if(dto == null) dto = (D) new BasicEntityRDto();
 
         dto.setUse(entity.getUse());
         dto.setDel(entity.getDel());
@@ -22,6 +23,7 @@ public abstract class BasicEntityRMapper<E extends BasicEntity, D extends BasicE
 
     public E toEntityByBasic(D dto){
         E entity = createEntityInstance();
+        if(entity == null) entity = (E) new BasicEntity();
 
         entity.setUse(dto.getUse());
         entity.setDel(dto.getDel());
